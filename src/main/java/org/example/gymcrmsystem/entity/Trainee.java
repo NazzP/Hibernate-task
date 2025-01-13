@@ -1,4 +1,4 @@
-package org.example.gymcrmsystem.model;
+package org.example.gymcrmsystem.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;

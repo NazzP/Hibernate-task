@@ -1,4 +1,4 @@
-package org.example.gymcrmsystem.model;
+package org.example.gymcrmsystem.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,11 +1,10 @@
-package org.example.gymcrmsystem.model;
+package org.example.gymcrmsystem.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Immutable;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 @Data
