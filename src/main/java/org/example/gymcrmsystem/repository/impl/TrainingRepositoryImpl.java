@@ -20,11 +20,7 @@ public class TrainingRepositoryImpl implements TrainingRepository {
     private final EntityManager entityManager;
 
     @Override
-    @Transactional
     public Training save(Training training) {
-        if (training.getTrainee() == null || training.getTrainer() == null || training.getTrainingType() == null){
-            throw new IllegalArgumentException("Entity cannot be null");
-        }
             if (training.getId() == null) {
                 entityManager.persist(training);
             } else {
