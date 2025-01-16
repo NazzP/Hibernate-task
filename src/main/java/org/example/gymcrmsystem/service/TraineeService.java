@@ -91,4 +91,5 @@ public interface TraineeService {
      */
     void changePassword(String username, String lastPassword, String newPassword) throws EntityNotFoundException, IllegalArgumentException;
 
+    String forgotPassword(String username);
 }

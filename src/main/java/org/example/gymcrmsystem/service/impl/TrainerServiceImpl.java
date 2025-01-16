@@ -1,6 +1,5 @@
 package org.example.gymcrmsystem.service.impl;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +35,6 @@ public class TrainerServiceImpl implements TrainerService {
     private final UsernameGenerator usernameGenerator;
     private final PasswordGenerator passwordGenerator;
     private final TrainerMapper trainerMapper;
-    private final TrainingTypeMapper trainingTypeMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -71,7 +69,6 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    @Transactional
     public TrainerDto update(String username, @Valid TrainerDto trainerDto) {
         LOGGER.info("Updating Trainer with username {}", username);
         Trainer existingTrainer = trainerRepository.findByUsername(username).orElseThrow(
@@ -87,9 +84,6 @@ public class TrainerServiceImpl implements TrainerService {
         existingTrainer.setSpecialization(trainingType);
         existingTrainer.getUser().setFirstName(trainerDto.getUser().getFirstName());
         existingTrainer.getUser().setLastName(trainerDto.getUser().getLastName());
-        existingTrainer.getUser().setUsername(usernameGenerator.generateUniqueUsername(trainerDto.getUser()));
-        existingTrainer.getUser().setPassword(passwordEncoder.encode(trainerDto.getUser().getPassword()));
-        existingTrainer.setSpecialization(trainingTypeMapper.convertToEntity(trainerDto.getSpecialization()));
 
         Trainer updatedTrainer = trainerRepository.save(existingTrainer);
         LOGGER.info("Trainer with username {} updated successfully", updatedTrainer.getUser().getUsername());
@@ -100,13 +94,12 @@ public class TrainerServiceImpl implements TrainerService {
     @Override
     public boolean authenticateTrainer(String username, String password) {
         Trainer existingTrainer = trainerRepository.findByUsername(username).orElseThrow(
-                () -> new EntityNotFoundException("TrainingType with username " + username + " wasn't found")
+                () -> new EntityNotFoundException("Trainer with username " + username + " wasn't found")
         );
         return passwordEncoder.matches(password, existingTrainer.getUser().getPassword());
     }
 
     @Override
-    @Transactional
     public void changeStatus(String username, Boolean isActive) {
         Trainer existingTrainer = trainerRepository.findByUsername(username).orElseThrow(
                 () -> new EntityNotFoundException("Trainer with username " + username + " wasn't found")
@@ -115,13 +108,12 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    @Transactional
     public void changePassword(String username, String lastPassword, String newPassword) {
         Trainer existingTrainer = trainerRepository.findByUsername(username).orElseThrow(
-                () -> new EntityNotFoundException("Trainee with username " + username + " wasn't found")
+                () -> new EntityNotFoundException("Trainer with username " + username + " wasn't found")
         );
         if (passwordEncoder.matches(lastPassword, existingTrainer.getUser().getPassword())) {
-            existingTrainer.getUser().setPassword(newPassword);
+            existingTrainer.getUser().setPassword(passwordEncoder.encode(newPassword));
             trainerRepository.save(existingTrainer);
         } else {
             throw new IllegalArgumentException("Wrong password");
@@ -142,10 +134,9 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    @Transactional
     public List<TrainerDto> updateTrainersList(String traineeUsername, List<String> trainersUsernames) {
         Trainee existingTrainee = traineeRepository.findByUsername(traineeUsername).orElseThrow(
-                () -> new EntityNotFoundException("Trainee with username " + traineeUsername + " wasn't found")
+                () -> new EntityNotFoundException("Trainer with username " + traineeUsername + " wasn't found")
         );
 
         List<Trainer> trainers = trainersUsernames.stream()
@@ -160,5 +151,19 @@ public class TrainerServiceImpl implements TrainerService {
         return trainers.stream()
                 .map(trainerMapper::convertToDto)
                 .toList();
+    }
+
+    @Override
+    public String forgotPassword(String username) {
+        Trainer existingTrainer = trainerRepository.findByUsername(username).orElseThrow(
+                () -> new EntityNotFoundException("Trainer with username " + username + " wasn't found")
+        );
+
+        String tempPassword = passwordGenerator.generateRandomPassword();
+
+        existingTrainer.getUser().setPassword(passwordEncoder.encode(tempPassword));
+        trainerRepository.save(existingTrainer);
+
+        return tempPassword;
     }
 }

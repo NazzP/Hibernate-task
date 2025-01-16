@@ -1,6 +1,5 @@
 package org.example.gymcrmsystem.service.impl;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +28,6 @@ public class TraineeServiceImpl implements TraineeService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    @Transactional
     public TraineeDto create(@Valid TraineeDto traineeDto) {
         traineeDto.getUser().setPassword(passwordEncoder.encode(passwordGenerator.generateRandomPassword()));
         traineeDto.getUser().setUsername(usernameGenerator.generateUniqueUsername(traineeDto.getUser()));
@@ -55,7 +53,6 @@ public class TraineeServiceImpl implements TraineeService {
     }
 
     @Override
-    @Transactional
     public TraineeDto update(String username, @Valid TraineeDto traineeDto) {
         LOGGER.info("Updating trainee with Username {}", username);
         Trainee existingTrainee = traineeRepository.findByUsername(username).orElseThrow(
@@ -64,8 +61,7 @@ public class TraineeServiceImpl implements TraineeService {
 
         existingTrainee.getUser().setFirstName(traineeDto.getUser().getFirstName());
         existingTrainee.getUser().setLastName(traineeDto.getUser().getLastName());
-        existingTrainee.getUser().setPassword(passwordEncoder.encode(traineeDto.getUser().getPassword()));
-        existingTrainee.getUser().setUsername(usernameGenerator.generateUniqueUsername(traineeDto.getUser()));
+        existingTrainee.getUser().setUsername(traineeDto.getUser().getUsername());
         existingTrainee.setDateOfBirth(traineeDto.getDateOfBirth());
         existingTrainee.setAddress(traineeDto.getAddress());
 
@@ -75,7 +71,6 @@ public class TraineeServiceImpl implements TraineeService {
     }
 
     @Override
-    @Transactional
     public void delete(String username) {
         LOGGER.info("Deleting trainee with username {}", username);
         traineeRepository.findByUsername(username).ifPresentOrElse(
@@ -99,13 +94,12 @@ public class TraineeServiceImpl implements TraineeService {
     }
 
     @Override
-    @Transactional
     public void changePassword(String username, String lastPassword, String newPassword) {
         Trainee existingTrainee = traineeRepository.findByUsername(username).orElseThrow(
                 () -> new EntityNotFoundException("Trainee with username " + username + " wasn't found")
         );
         if (passwordEncoder.matches(lastPassword, existingTrainee.getUser().getPassword())) {
-            existingTrainee.getUser().setPassword(newPassword);
+            existingTrainee.getUser().setPassword(passwordEncoder.encode(newPassword));
             traineeRepository.save(existingTrainee);
         } else {
             throw new IllegalArgumentException("Wrong password");
@@ -113,11 +107,25 @@ public class TraineeServiceImpl implements TraineeService {
     }
 
     @Override
-    @Transactional
     public void changeStatus(String username, Boolean isActive) {
-        Trainee existingTrainee = traineeMapper.convertToEntity(select(username));
+        Trainee existingTrainee = traineeRepository.findByUsername(username).orElseThrow(
+                () -> new EntityNotFoundException("Trainee with username " + username + " wasn't found")
+        );
         existingTrainee.getUser().setIsActive(isActive);
         traineeRepository.save(existingTrainee);
     }
-}
 
+    @Override
+    public String forgotPassword(String username) {
+        Trainee existingTrainee = traineeRepository.findByUsername(username).orElseThrow(
+                () -> new EntityNotFoundException("Trainee with username " + username + " wasn't found")
+        );
+
+        String tempPassword = passwordGenerator.generateRandomPassword();
+
+        existingTrainee.getUser().setPassword(passwordEncoder.encode(tempPassword));
+        traineeRepository.save(existingTrainee);
+
+        return tempPassword;
+    }
+}

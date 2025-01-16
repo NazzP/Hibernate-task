@@ -112,4 +112,6 @@ public interface TrainerService {
      * @throws EntityNotFoundException if the Trainee or any Trainer is not found.
      */
     List<TrainerDto> updateTrainersList(String traineeUsername, List<String> trainersUsernames);
+
+    String forgotPassword(String username);
 }
