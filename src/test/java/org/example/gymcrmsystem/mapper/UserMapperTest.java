@@ -3,7 +3,7 @@ package org.example.gymcrmsystem.mapper;
 import org.example.gymcrmsystem.config.AppConfig;
 import org.example.gymcrmsystem.dto.UserDto;
 import org.example.gymcrmsystem.entity.User;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -12,11 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class UserMapperTest {
 
-    private UserMapper userMapper;
+    private static UserMapper userMapper;
+    private static AnnotationConfigApplicationContext context;
 
-    @BeforeEach
-    void setUp() {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+    @BeforeAll
+    public static void setUp() {
+        context = new AnnotationConfigApplicationContext(AppConfig.class);
         userMapper = context.getBean(UserMapper.class);
     }
 

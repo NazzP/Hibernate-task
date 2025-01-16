@@ -9,7 +9,8 @@ import org.example.gymcrmsystem.dto.UserDto;
 import org.example.gymcrmsystem.entity.Trainee;
 import org.example.gymcrmsystem.dto.TraineeDto;
 import org.example.gymcrmsystem.entity.User;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -17,11 +18,13 @@ import java.time.LocalDate;
 
 class TraineeMapperTest {
 
-    private TraineeMapper traineeMapper;
 
-    @BeforeEach
-    public void setUp() {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+    private static TraineeMapper traineeMapper;
+    private static AnnotationConfigApplicationContext context;
+
+    @BeforeAll
+    public static void setUp() {
+        context = new AnnotationConfigApplicationContext(AppConfig.class);
         traineeMapper = context.getBean(TraineeMapper.class);
     }
 
@@ -83,5 +86,12 @@ class TraineeMapperTest {
     void convertToEntityWithNullTraineeDto() {
         Trainee trainee = traineeMapper.convertToEntity(null);
         assertNull(trainee, "Expected convertToEntity to return null when input is null");
+    }
+
+    @AfterAll
+    public static void tearDown() {
+        if (context != null) {
+            context.close();
+        }
     }
 }

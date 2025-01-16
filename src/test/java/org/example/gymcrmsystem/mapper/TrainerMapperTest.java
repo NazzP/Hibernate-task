@@ -7,7 +7,8 @@ import org.example.gymcrmsystem.dto.UserDto;
 import org.example.gymcrmsystem.entity.Trainer;
 import org.example.gymcrmsystem.entity.TrainingType;
 import org.example.gymcrmsystem.entity.User;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -15,12 +16,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TrainerMapperTest {
 
-    private TrainerMapper trainerMapper;
+    private static TrainerMapper trainerMapper;
+    private static AnnotationConfigApplicationContext context;
 
-    @BeforeEach
-    public void setUp() {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+    @BeforeAll
+    public static void setUp() {
+        context = new AnnotationConfigApplicationContext(AppConfig.class);
         trainerMapper = context.getBean(TrainerMapper.class);
+    }
+
+    @AfterAll
+    public static void tearDown() {
+        if (context != null) {
+            context.close();
+        }
     }
 
     @Test

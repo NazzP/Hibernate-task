@@ -3,7 +3,8 @@ package org.example.gymcrmsystem.mapper;
 import org.example.gymcrmsystem.config.AppConfig;
 import org.example.gymcrmsystem.dto.TrainingTypeDto;
 import org.example.gymcrmsystem.entity.TrainingType;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -11,12 +12,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TrainingTypeMapperTest {
 
-    private TrainingTypeMapper trainingTypeMapper;
+    private static TrainingTypeMapper trainingTypeMapper;
+    private static AnnotationConfigApplicationContext context;
 
-    @BeforeEach
-    void setUp() {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+    @BeforeAll
+    public static void setUp() {
+        context = new AnnotationConfigApplicationContext(AppConfig.class);
         trainingTypeMapper = context.getBean(TrainingTypeMapper.class);
+    }
+
+    @AfterAll
+    public static void tearDown() {
+        if (context != null) {
+            context.close();
+        }
     }
 
     @Test
