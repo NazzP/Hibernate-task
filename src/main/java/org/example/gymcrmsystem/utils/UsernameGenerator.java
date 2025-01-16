@@ -58,7 +58,7 @@ public class UsernameGenerator {
         return username;
     }
 
-    private boolean checkIfUsernameExists(String username) {
+    boolean checkIfUsernameExists(String username) {
         LOGGER.debug("Checking if username '{}' exists in UserRepository", username);
         return userRepository.existsByUsername(username);
     }
