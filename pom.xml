@@ -2,11 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.1</version>
     </parent>
+
     <groupId>org.example</groupId>
     <artifactId>GymCrmSystem</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -26,6 +28,7 @@
         <jakarta.el.version>6.0.0</jakarta.el.version>
         <org.glassfish.jakarta.el.version>4.0.2</org.glassfish.jakarta.el.version>
         <org.postgresql.version>42.7.4</org.postgresql.version>
+        <com.h2database.version>2.3.232</com.h2database.version>
         <org.mockito.version>5.5.0</org.mockito.version>
         <org.mockito-inline.version>5.2.0</org.mockito-inline.version>
         <org.junit.jupiter.version>5.11.4</org.junit.jupiter.version>
@@ -106,6 +109,12 @@
             <groupId>org.glassfish</groupId>
             <artifactId>jakarta.el</artifactId>
             <version>${org.glassfish.jakarta.el.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${com.h2database.version}</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
