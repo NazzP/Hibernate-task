@@ -6,7 +6,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.gymcrmsystem.entity.Trainee;
 import org.example.gymcrmsystem.repository.TraineeRepository;
@@ -22,14 +21,7 @@ public class TraineeRepositoryImpl implements TraineeRepository {
     private final EntityManager entityManager;
 
     @Override
-    @Transactional
     public Trainee save(Trainee trainee) {
-        if (trainee == null || trainee.getUser() == null) {
-            throw new IllegalArgumentException("Entity cannot be null");
-        }
-        if (trainee.getUser().getUsername() == null || trainee.getUser().getUsername().isEmpty()) {
-            throw new IllegalArgumentException("Username cannot be null or empty");
-        }
         if (trainee.getId() == null) {
             entityManager.persist(trainee);
         } else {
@@ -40,9 +32,6 @@ public class TraineeRepositoryImpl implements TraineeRepository {
 
     @Override
     public Optional<Trainee> findByUsername(String username) {
-        if (username == null || username.isEmpty()) {
-            throw new IllegalArgumentException("Username cannot be null or empty");
-        }
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Trainee> query = cb.createQuery(Trainee.class);
         Root<Trainee> root = query.from(Trainee.class);
@@ -57,11 +46,7 @@ public class TraineeRepositoryImpl implements TraineeRepository {
     }
 
     @Override
-    @Transactional
     public void deleteByUsername(String username) {
-        if (username == null || username.isEmpty()) {
-            throw new IllegalArgumentException("Username cannot be null or empty");
-        }
         findByUsername(username).ifPresent(entityManager::remove);
     }
 }

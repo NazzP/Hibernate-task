@@ -25,14 +25,7 @@ public class TrainerRepositoryImpl implements TrainerRepository {
     private final EntityManager entityManager;
 
     @Override
-    @Transactional
     public Trainer save(Trainer trainer) {
-        if (trainer == null || trainer.getUser() == null) {
-            throw new IllegalArgumentException("Entity cannot be null");
-        }
-        if (trainer.getUser().getUsername() == null || trainer.getUser().getUsername().isEmpty()) {
-            throw new IllegalArgumentException("Username cannot be null or empty");
-        }
         if (trainer.getId() == null){
             entityManager.persist(trainer);
         } else {
@@ -43,9 +36,6 @@ public class TrainerRepositoryImpl implements TrainerRepository {
 
     @Override
     public Optional<Trainer> findByUsername(String username) {
-        if (username == null || username.isEmpty()) {
-            throw new IllegalArgumentException("Username cannot be null or empty");
-        }
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Trainer> query = cb.createQuery(Trainer.class);
         Root<Trainer> root = query.from(Trainer.class);
