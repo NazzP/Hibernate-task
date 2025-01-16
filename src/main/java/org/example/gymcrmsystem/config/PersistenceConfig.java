@@ -6,8 +6,9 @@ import jakarta.persistence.ValidationMode;
 import jakarta.persistence.spi.ClassTransformer;
 import jakarta.persistence.spi.PersistenceUnitInfo;
 import jakarta.persistence.spi.PersistenceUnitTransactionType;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.sql.DataSource;
@@ -19,14 +20,12 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackages = "org.example.gymcrmsystem.repository")
 public class PersistenceConfig implements PersistenceUnitInfo {
 
-    @Value("${spring.datasource.url}")
-    private String datasourceUrl;
+    private final Environment env;
 
-    @Value("${spring.datasource.username}")
-    private String datasourceUsername;
-
-    @Value("${spring.datasource.password}")
-    private String datasourcePassword;
+    @Autowired
+    public PersistenceConfig(Environment env) {
+        this.env = env;
+    }
 
     @Override
     public String getPersistenceUnitName() {
@@ -51,9 +50,9 @@ public class PersistenceConfig implements PersistenceUnitInfo {
     @Override
     public DataSource getNonJtaDataSource() {
         HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl(datasourceUrl);
-        dataSource.setUsername(datasourceUsername);
-        dataSource.setPassword(datasourcePassword);
+        dataSource.setJdbcUrl(env.getProperty("datasource.url"));
+        dataSource.setUsername(env.getProperty("datasource.username"));
+        dataSource.setPassword(env.getProperty("datasource.password"));
         return dataSource;
     }
 
@@ -95,15 +94,12 @@ public class PersistenceConfig implements PersistenceUnitInfo {
     @Override
     public Properties getProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "create");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL10Dialect");
-        properties.setProperty("hibernate.show_sql", "true");
-        properties.setProperty("hibernate.format_sql", "true");
-        properties.setProperty("hibernate.jdbc.lob.non_contextual_creation", "true");
-        properties.setProperty("spring.jpa.defer-datasource-initialization", "true");
-        properties.setProperty("spring.sql.init.platform", "postgres");
-        properties.setProperty("spring.sql.init.mode", "always");
-        properties.setProperty("jakarta.persistence.sql-load-script-source", "data.sql");
+        properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
+        properties.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+        properties.setProperty("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
+        properties.setProperty("hibernate.jdbc.lob.non_contextual_creation", env.getProperty("hibernate.jdbc.lob.non_contextual_creation"));
+        properties.setProperty("jakarta.persistence.sql-load-script-source", env.getProperty("jakarta.persistence.sql-load-script-source"));
         return properties;
     }
 
