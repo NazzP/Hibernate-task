@@ -38,6 +38,7 @@
         <org.jacoco.version>0.8.12</org.jacoco.version>
         <org.apache.tomcat.embed.version>11.0.0</org.apache.tomcat.embed.version>
         <org.apache.maven.plugins.version>3.10.1</org.apache.maven.plugins.version>
+        <maven-failsafe-plugin.version>3.5.2</maven-failsafe-plugin.version>
     </properties>
 
     <dependencies>
@@ -256,6 +257,19 @@
                                 </rule>
                             </rules>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
