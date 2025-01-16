@@ -25,7 +25,7 @@ public class TrainingTypeRepositoryImpl implements TrainingTypeRepository {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<TrainingType> query = cb.createQuery(TrainingType.class);
         Root<TrainingType> root = query.from(TrainingType.class);
-        query.select(root).where(cb.equal(root.get("training_type_name"), trainingTypeName));
+        query.select(root).where(cb.equal(root.get("trainingTypeName"), trainingTypeName));
 
         try {
             TrainingType result = entityManager.createQuery(query).getSingleResult();
