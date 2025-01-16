@@ -24,12 +24,12 @@ public class Trainer implements Serializable {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToOne
-    @JoinColumn(name = "specialization", referencedColumnName = "training_type_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "specialization", referencedColumnName = "training_type_name", nullable = false)
     private TrainingType specialization;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "trainer", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Training> trainings;
 
     @ToString.Exclude

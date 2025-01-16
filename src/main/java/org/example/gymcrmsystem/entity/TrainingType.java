@@ -25,8 +25,8 @@ public class TrainingType implements Serializable {
     private String trainingTypeName;
 
     @ToString.Exclude
-    @OneToOne(mappedBy = "specialization")
-    private Trainer trainer;
+    @OneToMany(mappedBy = "specialization", fetch = FetchType.EAGER)
+    private List<Trainer> trainers;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "trainingType")

@@ -34,7 +34,7 @@ public class Trainee implements Serializable {
     private User user;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "trainer", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Training> trainings;
 
     @ToString.Exclude
@@ -44,8 +44,8 @@ public class Trainee implements Serializable {
     })
     @JoinTable(
             name = "trainee_trainer",
-            joinColumns = @JoinColumn(name = "trainee_id", referencedColumnName = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "trainer_id", referencedColumnName = "user_id")
+            joinColumns = @JoinColumn(name = "trainee_id", referencedColumnName = "trainee_id"),
+            inverseJoinColumns = @JoinColumn(name = "trainer_id", referencedColumnName = "trainer_id")
     )
     private List<Trainer> trainers = new ArrayList<>();
 }
