@@ -37,16 +37,16 @@ public class Trainer implements Serializable {
     @Column(name = "trainer_id", nullable = false, unique = true)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "specialization", referencedColumnName = "training_type_name", nullable = false)
     private TrainingType specialization;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "trainer", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "trainer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Training> trainings;
 
     @ToString.Exclude

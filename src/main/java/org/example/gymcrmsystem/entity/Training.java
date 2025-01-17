@@ -42,7 +42,7 @@ public class Training implements Serializable {
     @Column(name = "training_name", nullable = false)
     private String trainingName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "training_type_id")
     private TrainingType trainingType;
 
