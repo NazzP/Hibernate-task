@@ -1,6 +1,7 @@
 package org.example.gymcrmsystem.dto;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.io.Serializable;
@@ -12,10 +13,12 @@ import java.io.Serializable;
 public class UserDto implements Serializable {
 
     @NotNull(message = "First name is required")
+    @Pattern(regexp = "^[^0-9]*$", message = "First name mustn't contain numbers")
     @ToString.Exclude
     private String firstName;
 
     @NotNull(message = "Last name is required")
+    @Pattern(regexp = "^[^0-9]*$", message = "Last name mustn't' contain numbers")
     @ToString.Exclude
     private String lastName;
 

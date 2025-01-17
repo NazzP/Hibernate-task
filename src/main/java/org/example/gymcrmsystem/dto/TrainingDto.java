@@ -2,6 +2,7 @@ package org.example.gymcrmsystem.dto;
 
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +24,7 @@ public class TrainingDto implements Serializable {
     @NotNull(message = "trainer id is required")
     private TrainerDto trainer;
 
+    @Pattern(regexp = "^[^0-9]*$", message = "Training name name mustn't contain numbers")
     @NotNull(message = "training name is required")
     private String trainingName;
 
