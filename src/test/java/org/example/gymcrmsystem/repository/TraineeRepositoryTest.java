@@ -1,5 +1,7 @@
 package org.example.gymcrmsystem.repository;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -8,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.example.gymcrmsystem.config.AppConfig;
 import org.example.gymcrmsystem.entity.Trainee;
 import org.example.gymcrmsystem.entity.User;
-import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
 import java.util.Optional;

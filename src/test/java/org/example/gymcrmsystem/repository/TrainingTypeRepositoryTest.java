@@ -1,14 +1,14 @@
 package org.example.gymcrmsystem.repository;
 
+import org.example.gymcrmsystem.entity.TrainingType;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.example.gymcrmsystem.config.AppConfig;
-import org.example.gymcrmsystem.entity.*;
-import org.junit.jupiter.api.*;
-import org.springframework.transaction.annotation.Transactional;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 

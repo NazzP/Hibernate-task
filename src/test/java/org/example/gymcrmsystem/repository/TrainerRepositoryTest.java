@@ -4,7 +4,8 @@ import org.example.gymcrmsystem.config.AppConfig;
 import org.example.gymcrmsystem.entity.Trainer;
 import org.example.gymcrmsystem.entity.TrainingType;
 import org.example.gymcrmsystem.entity.User;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -46,7 +47,6 @@ class TrainerRepositoryTest {
 
         assertNotNull(savedTrainer);
         assertEquals("FirstName", savedTrainer.getUser().getFirstName());
-        assertEquals(savedTrainer.getUser().getUsername(), savedTrainer.getUser().getUsername());
     }
 
     @Test

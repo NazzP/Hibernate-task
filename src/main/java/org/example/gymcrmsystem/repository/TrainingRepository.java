@@ -31,7 +31,7 @@ public interface TrainingRepository {
      * @param fromDate        - the date from which we start
      * @param toDate          - date until which we continue the search
      * @param trainingType    - the {@link TrainingType} TrainingTypeName is using
-     * @param trainerName    - the {@link Trainer} Trainer firstName
+     * @param trainerName     - the {@link Trainer} Trainer firstName
      * @return The saved {@link Training} entity with updated information
      */
     List<Training> getByTraineeCriteria(String traineeUsername, LocalDate fromDate, LocalDate toDate,
@@ -47,7 +47,7 @@ public interface TrainingRepository {
      * @param trainerUsername - the {@link Trainer} Trainee username
      * @param fromDate        - the date from which we start
      * @param toDate          - date until which we continue the search
-     * @param traineeName    - the {@link Trainee} Trainee firstName
+     * @param traineeName     - the {@link Trainee} Trainee firstName
      * @return The saved {@link Training} entity with updated information
      */
     List<Training> getByTrainerCriteria(String trainerUsername, LocalDate fromDate, LocalDate toDate,

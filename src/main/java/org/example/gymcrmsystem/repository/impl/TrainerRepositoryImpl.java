@@ -26,7 +26,7 @@ public class TrainerRepositoryImpl implements TrainerRepository {
 
     @Override
     public Trainer save(Trainer trainer) {
-        if (trainer.getId() == null){
+        if (trainer.getId() == null) {
             entityManager.persist(trainer);
         } else {
             entityManager.merge(trainer);

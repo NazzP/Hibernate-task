@@ -7,7 +7,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.example.gymcrmsystem.config.AppConfig;
 import org.example.gymcrmsystem.dto.TrainingTypeDto;
 import org.example.gymcrmsystem.entity.*;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

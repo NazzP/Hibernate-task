@@ -21,11 +21,11 @@ public class TrainingRepositoryImpl implements TrainingRepository {
 
     @Override
     public Training save(Training training) {
-            if (training.getId() == null) {
-                entityManager.persist(training);
-            } else {
-                entityManager.merge(training);
-            }
+        if (training.getId() == null) {
+            entityManager.persist(training);
+        } else {
+            entityManager.merge(training);
+        }
         return training;
     }
 

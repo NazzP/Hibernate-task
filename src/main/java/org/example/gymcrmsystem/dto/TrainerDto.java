@@ -1,7 +1,11 @@
 package org.example.gymcrmsystem.dto;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 import java.io.Serializable;
 

@@ -30,7 +30,7 @@ public interface TrainingService {
      * @param traineeUsername The username of the trainee whose training sessions are to be retrieved.
      * @param fromDate        The start date for filtering training sessions.
      * @param toDate          The end date for filtering training sessions.
-     * @param trainerName    The firstName of Trainer whose training sessions are to be retrieved.
+     * @param trainerName     The firstName of Trainer whose training sessions are to be retrieved.
      * @param trainingType    The type of training sessions to filter by.
      * @return A list of {@link TrainingDto} objects representing the trainee's training sessions.
      * @throws EntityNotFoundException if the Trainee with the provided traineeUsername is not found.
@@ -45,7 +45,7 @@ public interface TrainingService {
      * @param trainerUsername The username of the trainer whose training sessions are to be retrieved.
      * @param fromDate        The start date for filtering training sessions.
      * @param toDate          The end date for filtering training sessions.
-     * @param traineeName    The firstName of trainee whose training sessions are to be retrieved.
+     * @param traineeName     The firstName of trainee whose training sessions are to be retrieved.
      * @return A list of {@link TrainingDto} objects representing the trainer's training sessions.
      * @throws EntityNotFoundException if the Trainer with the provided trainerUsername is not found.
      */

@@ -28,9 +28,9 @@ public interface TrainingFacade {
      * Retrieves a list of training sessions for a specific trainee.
      *
      * @param traineeUsername The username of the trainee whose training sessions are to be retrieved.
-     * @param fromDate The start date for filtering training sessions.
-     * @param toDate The end date for filtering training sessions.
-     * @param trainingType The type of training sessions to filter by.
+     * @param fromDate        The start date for filtering training sessions.
+     * @param toDate          The end date for filtering training sessions.
+     * @param trainingType    The type of training sessions to filter by.
      * @return A list of {@link TrainingDto} objects representing the trainee's training sessions.
      */
     List<TrainingDto> getTraineeTrainings(String traineeUsername, LocalDate fromDate,
@@ -40,9 +40,9 @@ public interface TrainingFacade {
      * Retrieves a list of training sessions for a specific trainer.
      *
      * @param trainerUsername The username of the trainer whose training sessions are to be retrieved.
-     * @param fromDate The start date for filtering training sessions.
-     * @param toDate The end date for filtering training sessions.
-     * @param trainerName The firstName of Trainer whose training sessions are to be retrieved.
+     * @param fromDate        The start date for filtering training sessions.
+     * @param toDate          The end date for filtering training sessions.
+     * @param trainerName     The firstName of Trainer whose training sessions are to be retrieved.
      * @return A list of {@link TrainingDto} objects representing the trainer's training sessions.
      */
     List<TrainingDto> getTrainerTrainings(String trainerUsername, LocalDate fromDate,

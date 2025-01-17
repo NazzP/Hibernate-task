@@ -8,6 +8,7 @@ import org.example.gymcrmsystem.entity.Trainee;
 import org.example.gymcrmsystem.exception.EntityNotFoundException;
 import org.example.gymcrmsystem.repository.TraineeRepository;
 import org.example.gymcrmsystem.service.TraineeService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +22,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Testcontainers
 @ExtendWith(SpringExtension.class)
@@ -52,7 +53,7 @@ class TraineeServiceIT {
 
     @Test
     void isPostgresRunningTest() {
-        assertTrue(postgres.isRunning());
+        Assertions.assertTrue(postgres.isRunning());
     }
 
     @BeforeEach
@@ -72,15 +73,15 @@ class TraineeServiceIT {
     void createTraineeSuccess() {
         TraineeDto result = traineeService.create(traineeDto);
 
-        assertNotNull(result);
-        assertEquals("FirstName", result.getUser().getFirstName());
-        assertEquals("LastName", result.getUser().getLastName());
-        assertEquals("FirstName.LastName", result.getUser().getUsername());
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals("FirstName", result.getUser().getFirstName());
+        Assertions.assertEquals("LastName", result.getUser().getLastName());
+        Assertions.assertEquals("FirstName.LastName", result.getUser().getUsername());
 
         Trainee savedTrainee = traineeRepository.findByUsername(result.getUser().getUsername()).orElse(null);
-        assertNotNull(savedTrainee);
-        assertEquals(savedTrainee.getUser().getFirstName(), result.getUser().getFirstName());
-        assertEquals(savedTrainee.getAddress(), result.getAddress());
+        Assertions.assertNotNull(savedTrainee);
+        Assertions.assertEquals(savedTrainee.getUser().getFirstName(), result.getUser().getFirstName());
+        Assertions.assertEquals(savedTrainee.getAddress(), result.getAddress());
     }
 
     @Test
@@ -88,9 +89,9 @@ class TraineeServiceIT {
         TraineeDto result = traineeService.create(traineeDto);
         TraineeDto savedTraineeDro = traineeService.select(traineeDto.getUser().getUsername());
 
-        assertNotNull(savedTraineeDro);
-        assertEquals(savedTraineeDro.getUser().getFirstName(), result.getUser().getFirstName());
-        assertEquals(savedTraineeDro.getAddress(), result.getAddress());
+        Assertions.assertNotNull(savedTraineeDro);
+        Assertions.assertEquals(savedTraineeDro.getUser().getFirstName(), result.getUser().getFirstName());
+        Assertions.assertEquals(savedTraineeDro.getAddress(), result.getAddress());
     }
 
     @Test
@@ -120,9 +121,9 @@ class TraineeServiceIT {
 
         TraineeDto updatedTraineeDro = traineeService.update(traineeDto.getUser().getUsername(), updatedTraineeDto);
 
-        assertNotNull(updatedTraineeDro);
-        assertEquals(updatedTraineeDro.getUser().getFirstName(), updatedFirstName);
-        assertEquals(updatedTraineeDro.getAddress(), updatedAddress);
+        Assertions.assertNotNull(updatedTraineeDro);
+        Assertions.assertEquals(updatedTraineeDro.getUser().getFirstName(), updatedFirstName);
+        Assertions.assertEquals(updatedTraineeDro.getAddress(), updatedAddress);
     }
 
     @Test
@@ -149,11 +150,11 @@ class TraineeServiceIT {
     void deleteTraineeSuccess() {
         TraineeDto result = traineeService.create(traineeDto);
 
-        assertNotNull(result);
+        Assertions.assertNotNull(result);
 
         traineeService.delete(result.getUser().getUsername());
         Trainee deletedTrainee = traineeRepository.findByUsername(result.getUser().getUsername()).orElse(null);
-        assertNull(deletedTrainee);
+        Assertions.assertNull(deletedTrainee);
     }
 
     @Test
@@ -170,17 +171,15 @@ class TraineeServiceIT {
         String password = traineeService.forgotPassword(username);
 
         boolean isAuthenticated = traineeService.authenticateTrainee(username, password);
-        assertTrue(isAuthenticated);
+        Assertions.assertTrue(isAuthenticated);
     }
 
     @Test
     void authenticateTraineeNotFound() {
         String nonExistingUsername = "nonexistent";
         String password = "password";
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            traineeService.authenticateTrainee(nonExistingUsername, password);
-        });
-        assertEquals("Trainee with username " + nonExistingUsername + " wasn't found", exception.getMessage());
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> traineeService.authenticateTrainee(nonExistingUsername, password));
+        Assertions.assertEquals("Trainee with username " + nonExistingUsername + " wasn't found", exception.getMessage());
     }
 
     @Test
@@ -199,7 +198,7 @@ class TraineeServiceIT {
         String password = "random";
 
         boolean isAuthenticated = traineeService.authenticateTrainee(username, password);
-        assertFalse(isAuthenticated);
+        Assertions.assertFalse(isAuthenticated);
     }
 
     @Test
@@ -217,7 +216,7 @@ class TraineeServiceIT {
         traineeService.changePassword(username, password, newPassword);
 
         boolean isAuthenticated = traineeService.authenticateTrainee(username, newPassword);
-        assertTrue(isAuthenticated);
+        Assertions.assertTrue(isAuthenticated);
     }
 
     @Test
@@ -225,10 +224,8 @@ class TraineeServiceIT {
         String nonExistingUsername = "nonexistent";
         String oldPassword = "oldPassword";
         String newPassword = "newPassword";
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            traineeService.changePassword(nonExistingUsername, oldPassword, newPassword);
-        });
-        assertEquals("Trainee with username " + nonExistingUsername + " wasn't found", exception.getMessage());
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> traineeService.changePassword(nonExistingUsername, oldPassword, newPassword));
+        Assertions.assertEquals("Trainee with username " + nonExistingUsername + " wasn't found", exception.getMessage());
     }
 
     @Test
@@ -236,10 +233,8 @@ class TraineeServiceIT {
         TraineeDto dto = traineeService.create(traineeDto);
         String username = dto.getUser().getUsername();
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            traineeService.changePassword(username, "wrongPassword", "newPassword");
-        });
-        assertEquals("Wrong password", exception.getMessage());
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> traineeService.changePassword(username, "wrongPassword", "newPassword"));
+        Assertions.assertEquals("Wrong password", exception.getMessage());
     }
 
     @Test
@@ -250,6 +245,6 @@ class TraineeServiceIT {
         traineeService.changeStatus(username, false);
 
         TraineeDto updatedTrainee = traineeService.select(username);
-        assertFalse(updatedTrainee.getUser().getIsActive());
+        Assertions.assertFalse(updatedTrainee.getUser().getIsActive());
     }
 }

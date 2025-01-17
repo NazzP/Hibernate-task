@@ -3,7 +3,6 @@ package org.example.gymcrmsystem.service.impl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.gymcrmsystem.mapper.TrainingTypeMapper;
 import org.example.gymcrmsystem.entity.Trainee;
 import org.example.gymcrmsystem.entity.TrainingType;
 import org.example.gymcrmsystem.repository.TraineeRepository;
