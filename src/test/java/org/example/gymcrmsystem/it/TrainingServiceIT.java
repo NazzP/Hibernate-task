@@ -168,10 +168,8 @@ class TrainingServiceIT {
         String trainerName = "Jane";
         String trainingType = "Yoga";
 
-        List<TrainingDto> trainings = trainingService.getTraineeTrainingsListCriteria(traineeUsername, fromDate, toDate, trainerName, trainingType);
-
-        assertNotNull(trainings);
-        assertTrue(trainings.isEmpty());
+        assertThrows(EntityNotFoundException.class, () -> trainingService.getTraineeTrainingsListCriteria(traineeUsername, fromDate, toDate, trainerName, trainingType),
+                "Trainee with username " + traineeUsername + "wasn't found");
     }
 
     @Test
@@ -198,9 +196,7 @@ class TrainingServiceIT {
         LocalDate toDate = LocalDate.now();
         String traineeName = "nonexistentTrainee";
 
-        List<TrainingDto> trainings = trainingService.getTrainerTrainingsListCriteria(trainerUsername, fromDate, toDate, traineeName);
-
-        assertNotNull(trainings);
-        assertTrue(trainings.isEmpty());
+        assertThrows(EntityNotFoundException.class, () -> trainingService.getTrainerTrainingsListCriteria(trainerUsername, fromDate, toDate, traineeName),
+                "Trainer with username " + trainerUsername + "wasn't found");
     }
 }

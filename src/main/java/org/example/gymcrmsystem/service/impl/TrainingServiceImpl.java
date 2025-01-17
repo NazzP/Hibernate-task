@@ -59,6 +59,10 @@ public class TrainingServiceImpl implements TrainingService {
     public List<TrainingDto> getTraineeTrainingsListCriteria(String traineeUsername, LocalDate fromDate,
                                                              LocalDate toDate, String trainerName, String trainingType) {
 
+        traineeRepository.findByUsername(traineeUsername).orElseThrow(
+                () -> new EntityNotFoundException("Trainee with username " + traineeUsername + " wasn't found")
+        );
+
         return trainingRepository.getByTraineeCriteria(traineeUsername, fromDate, toDate, trainerName, trainingType).stream()
                 .map(trainingMapper::convertToDto)
                 .toList();
@@ -66,7 +70,9 @@ public class TrainingServiceImpl implements TrainingService {
 
     public List<TrainingDto> getTrainerTrainingsListCriteria(String trainerUsername, LocalDate fromDate,
                                                              LocalDate toDate, String traineeName) {
-
+        trainerRepository.findByUsername(trainerUsername).orElseThrow(
+                () -> new EntityNotFoundException("Trainer with username " + trainerUsername + " wasn't found")
+        );
         return trainingRepository.getByTrainerCriteria(trainerUsername, fromDate, toDate, traineeName).stream()
                 .map(trainingMapper::convertToDto)
                 .toList();
