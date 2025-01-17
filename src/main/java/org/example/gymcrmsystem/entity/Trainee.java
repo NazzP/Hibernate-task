@@ -25,6 +25,7 @@ public class Trainee implements Serializable {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
+    @Basic(fetch = FetchType.LAZY)
     @ToString.Exclude
     @Column(name = "address")
     private String address;

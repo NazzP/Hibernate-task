@@ -1,11 +1,12 @@
-CREATE TABLE training_types
+CREATE TABLE IF NOT EXISTS training_types
 (
     training_type_id   BIGINT PRIMARY KEY,
     training_type_name VARCHAR(255) NOT NULL UNIQUE,
-    CONSTRAINT check_training_type_name CHECK (training_type_name IN ('Yoga', 'Cardio', 'Strength Training', 'CrossFit'))
+    CONSTRAINT check_training_type_name CHECK (training_type_name IN
+                                               ('Yoga', 'Cardio', 'Strength Training', 'CrossFit'))
 );
 
-CREATE TABLE users
+CREATE TABLE IF NOT EXISTS users
 (
     user_id    BIGINT PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
@@ -15,7 +16,7 @@ CREATE TABLE users
     is_active  BOOLEAN      NOT NULL
 );
 
-CREATE TABLE trainees
+CREATE TABLE IF NOT EXISTS trainees
 (
     trainee_id    BIGINT PRIMARY KEY,
     date_of_birth DATE,
@@ -24,7 +25,7 @@ CREATE TABLE trainees
     CONSTRAINT fk_trainee_user FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
-CREATE TABLE trainers
+CREATE TABLE IF NOT EXISTS trainers
 (
     trainer_id     BIGINT PRIMARY KEY,
     user_id        BIGINT NOT NULL UNIQUE,
@@ -33,7 +34,7 @@ CREATE TABLE trainers
     CONSTRAINT fk_trainer_specialization FOREIGN KEY (specialization) REFERENCES training_types (training_type_id)
 );
 
-CREATE TABLE trainings
+CREATE TABLE IF NOT EXISTS trainings
 (
     training_id      BIGINT PRIMARY KEY,
     trainee_id       BIGINT,
@@ -47,7 +48,7 @@ CREATE TABLE trainings
     CONSTRAINT fk_training_type FOREIGN KEY (training_type_id) REFERENCES training_types (training_type_id)
 );
 
-CREATE TABLE trainee_trainer
+CREATE TABLE IF NOT EXISTS trainee_trainer
 (
     trainee_id BIGINT NOT NULL,
     trainer_id BIGINT NOT NULL,
