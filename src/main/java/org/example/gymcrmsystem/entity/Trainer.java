@@ -25,7 +25,7 @@ public class Trainer implements Serializable {
     @Column(name = "trainer_id", nullable = false, unique = true)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
