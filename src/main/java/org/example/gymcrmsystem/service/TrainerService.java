@@ -2,6 +2,7 @@ package org.example.gymcrmsystem.service;
 
 import jakarta.validation.Valid;
 import org.example.gymcrmsystem.dto.TrainerDto;
+import org.example.gymcrmsystem.entity.TrainingType;
 import org.example.gymcrmsystem.exception.EntityNotFoundException;
 
 import java.util.List;
@@ -16,9 +17,10 @@ public interface TrainerService {
      * <p>
      *
      * @param trainerDTO - an object containing the details of the new Trainer
-     * @return The created {@link TrainerDto} with the assigned ID and relevant information
+     * @return The created {@link TrainerDto} with the assigned username and relevant information
+     * @throws EntityNotFoundException - if no {@link TrainingType} with the given username is found
      */
-    TrainerDto create(@Valid TrainerDto trainerDTO);
+    TrainerDto create(@Valid TrainerDto trainerDTO) throws EntityNotFoundException;
 
     /**
      * Retrieves a Trainer by its ID.
@@ -28,7 +30,7 @@ public interface TrainerService {
      *
      * @param username - the unique Username of the Trainer to be retrieved
      * @return The {@link TrainerDto} containing the Trainer's information
-     * @throws EntityNotFoundException - if no Trainer with the given ID is found
+     * @throws EntityNotFoundException - if no Trainer with the given username is found
      */
     TrainerDto select(String username) throws EntityNotFoundException;
 
@@ -41,7 +43,7 @@ public interface TrainerService {
      * @param username   - the unique Username of the Trainer to be updated
      * @param trainerDto - an object containing the updated information for the Trainer
      * @return The updated {@link TrainerDto} of the Trainer
-     * @throws EntityNotFoundException - if no Trainer with the given ID is found
+     * @throws EntityNotFoundException - if no Trainer with the given username is found
      */
     TrainerDto update(String username, @Valid TrainerDto trainerDto) throws EntityNotFoundException;
 
@@ -56,8 +58,9 @@ public interface TrainerService {
      * @param username The unique Username of the trainer.
      * @param password Trainer's password
      * @return A boolean indicating whether the provided password matches the stored password. Returns `true` if they match, otherwise `false`.
+     * @throws EntityNotFoundException - if no Trainer with the given username is found
      */
-    boolean authenticateTrainer(String username, String password);
+    boolean authenticateTrainer(String username, String password) throws EntityNotFoundException;
 
     /**
      * Changes the active status of a Trainer.
@@ -69,8 +72,9 @@ public interface TrainerService {
      *
      * @param username The unique username of the Trainer whose status is to be updated.
      * @param isActive A Boolean indicating the new status of the Trainer. `true` for active, `false` for inactive.
+     * @throws EntityNotFoundException - if no Trainer with the given username is found
      */
-    void changeStatus(String username, Boolean isActive);
+    void changeStatus(String username, Boolean isActive) throws EntityNotFoundException;
 
     /**
      * Changes the password of a Trainer.
@@ -82,8 +86,9 @@ public interface TrainerService {
      * @param username     Unique Trainer's username
      * @param lastPassword The last password that was set for Trainer.
      * @param newPassword  The new password to be set for the Trainer.
+     * @throws EntityNotFoundException - if no Trainer with the given username is found
      */
-    void changePassword(String username, String lastPassword, String newPassword);
+    void changePassword(String username, String lastPassword, String newPassword) throws EntityNotFoundException;
 
     /**
      * Retrieves a list of Trainers who are not assigned to the given Trainee.
@@ -96,7 +101,7 @@ public interface TrainerService {
      * @return A list of {@link TrainerDto} objects representing Trainers who are not assigned to the Trainee.
      * @throws EntityNotFoundException if the Trainee with the provided username is not found.
      */
-    List<TrainerDto> getUnassignedTrainersList(String traineeUsername);
+    List<TrainerDto> getUnassignedTrainersList(String traineeUsername) throws EntityNotFoundException;
 
     /**
      * Updates the list of Trainers assigned to a specific Trainee.
@@ -111,7 +116,15 @@ public interface TrainerService {
      * @return A list of {@link TrainerDto} objects representing the updated Trainers assigned to the Trainee.
      * @throws EntityNotFoundException if the Trainee or any Trainer is not found.
      */
-    List<TrainerDto> updateTrainersList(String traineeUsername, List<String> trainersUsernames);
+    List<TrainerDto> updateTrainersList(String traineeUsername, List<String> trainersUsernames) throws EntityNotFoundException;
 
-    String forgotPassword(String username);
+    /**
+     * Handles the process of initiating a password reset for a user.
+     *
+     * @param username the username of the user requesting a password reset.
+     * @return a confirmation message indicating that the password reset process
+     * has been initiated (e.g., a message indicating an email has been sent).
+     * @throws EntityNotFoundException if no user is found with the provided username.
+     */
+    String forgotPassword(String username) throws EntityNotFoundException;
 }

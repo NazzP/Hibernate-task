@@ -65,7 +65,7 @@ public interface TraineeService {
      * @param username The unique username of the Trainee whose status is to be updated.
      * @param isActive A Boolean indicating the new status of the Trainee. `true` for active, `false` for inactive.
      */
-    void changeStatus(String username, Boolean isActive);
+    void changeStatus(String username, Boolean isActive) throws EntityNotFoundException;
 
     /**
      * Authenticates a Trainee based on their credentials.
@@ -91,5 +91,13 @@ public interface TraineeService {
      */
     void changePassword(String username, String lastPassword, String newPassword) throws EntityNotFoundException, IllegalArgumentException;
 
-    String forgotPassword(String username);
+    /**
+     * Handles the process of initiating a password reset for a user.
+     *
+     * @param username the username of the user requesting a password reset.
+     * @return a confirmation message indicating that the password reset process
+     * has been initiated (e.g., a message indicating an email has been sent).
+     * @throws EntityNotFoundException if no user is found with the provided username.
+     */
+    String forgotPassword(String username) throws EntityNotFoundException;
 }

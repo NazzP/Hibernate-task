@@ -1,6 +1,7 @@
 package org.example.gymcrmsystem.facade;
 
 import org.example.gymcrmsystem.dto.TrainerDto;
+import org.example.gymcrmsystem.exception.EntityNotFoundException;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public interface TrainerFacade {
      * @param trainerDto A {@link TrainerDto} object containing the data for the new trainer.
      * @return The created {@link TrainerDto} with the assigned ID and any other relevant information.
      */
-    TrainerDto createTrainer(TrainerDto trainerDto);
+    TrainerDto createTrainer(TrainerDto trainerDto) throws EntityNotFoundException;
 
     /**
      * Retrieves a trainer's information by their unique username.
@@ -33,7 +34,7 @@ public interface TrainerFacade {
      * @param username The unique username of the trainer to be retrieved.
      * @return The {@link TrainerDto} containing the trainer's information.
      */
-    TrainerDto getTrainerByUsername(String username);
+    TrainerDto getTrainerByUsername(String username) throws EntityNotFoundException;
 
     /**
      * Updates an existing trainer's information.
@@ -45,7 +46,7 @@ public interface TrainerFacade {
      * @param trainerDto A {@link TrainerDto} containing the updated information for the trainer.
      * @return The updated {@link TrainerDto} with the new details.
      */
-    TrainerDto updateTrainer(String username, TrainerDto trainerDto);
+    TrainerDto updateTrainer(String username, TrainerDto trainerDto) throws EntityNotFoundException;
 
     /**
      * Authenticates a trainer using their credentials.
@@ -54,7 +55,7 @@ public interface TrainerFacade {
      * @param password Trainer's password
      * @return A Boolean value indicating whether the authentication was successful.
      */
-    boolean authenticateTrainer(String username, String password);
+    boolean authenticateTrainer(String username, String password) throws EntityNotFoundException;
 
     /**
      * Changes the active status of a trainer.
@@ -64,7 +65,7 @@ public interface TrainerFacade {
      * @param username The unique username of the trainer whose status is to be changed.
      * @param isActive A Boolean value indicating the new active status of the trainer.
      */
-    void changeTrainerStatus(String username, Boolean isActive);
+    void changeTrainerStatus(String username, Boolean isActive) throws EntityNotFoundException;
 
     /**
      * Changes the password of a trainer.
@@ -76,7 +77,7 @@ public interface TrainerFacade {
      * @param lastPassword The last password that was set for Trainer.
      * @param newPassword The new password for the trainer.
      */
-    void changeTrainerPassword(String username, String lastPassword, String newPassword);
+    void changeTrainerPassword(String username, String lastPassword, String newPassword) throws EntityNotFoundException;
 
     /**
      * Retrieves a list of unassigned trainers.
@@ -86,7 +87,7 @@ public interface TrainerFacade {
      * @param traineeUsername The username of the trainee for whom to retrieve unassigned trainers.
      * @return A list of {@link TrainerDto} objects representing unassigned trainers.
      */
-    List<TrainerDto> getUnassignedTrainers(String traineeUsername);
+    List<TrainerDto> getUnassignedTrainers(String traineeUsername) throws EntityNotFoundException;
 
     /**
      * Updates the list of trainers assigned to a trainee.
@@ -98,6 +99,6 @@ public interface TrainerFacade {
      * @param trainersUsernames A list of trainer usernames to be assigned to the trainee.
      * @return A list of {@link TrainerDto} objects representing the updated list of trainers.
      */
-    List<TrainerDto> updateTrainersList(String traineeUsername, List<String> trainersUsernames);
+    List<TrainerDto> updateTrainersList(String traineeUsername, List<String> trainersUsernames) throws EntityNotFoundException;
 }
 

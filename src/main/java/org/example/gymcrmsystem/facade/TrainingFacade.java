@@ -1,6 +1,7 @@
 package org.example.gymcrmsystem.facade;
 
 import org.example.gymcrmsystem.dto.TrainingDto;
+import org.example.gymcrmsystem.exception.EntityNotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,7 +22,7 @@ public interface TrainingFacade {
      * @param trainingDto A {@link TrainingDto} object containing the details of the new training session.
      * @return The created {@link TrainingDto} with the assigned ID and relevant information.
      */
-    TrainingDto addTraining(TrainingDto trainingDto);
+    TrainingDto addTraining(TrainingDto trainingDto) throws EntityNotFoundException;
 
     /**
      * Retrieves a list of training sessions for a specific trainee.
@@ -33,7 +34,7 @@ public interface TrainingFacade {
      * @return A list of {@link TrainingDto} objects representing the trainee's training sessions.
      */
     List<TrainingDto> getTraineeTrainings(String traineeUsername, LocalDate fromDate,
-                                          LocalDate toDate, String traineeName, String trainingType);
+                                          LocalDate toDate, String traineeName, String trainingType) throws EntityNotFoundException;
 
     /**
      * Retrieves a list of training sessions for a specific trainer.
@@ -45,6 +46,6 @@ public interface TrainingFacade {
      * @return A list of {@link TrainingDto} objects representing the trainer's training sessions.
      */
     List<TrainingDto> getTrainerTrainings(String trainerUsername, LocalDate fromDate,
-                                          LocalDate toDate, String trainerName);
+                                          LocalDate toDate, String trainerName) throws EntityNotFoundException;
 }
 
