@@ -4,6 +4,8 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.example.gymcrmsystem.config.AppConfig;
+import org.example.gymcrmsystem.config.JpaTestConfig;
+import org.example.gymcrmsystem.config.TestAppConfig;
 import org.example.gymcrmsystem.dto.UserDto;
 import org.example.gymcrmsystem.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,11 +13,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = AppConfig.class)
+@ContextConfiguration(classes = TestAppConfig.class)
+@ActiveProfiles("test")
 class UsernameGeneratorTest {
 
     @Mock

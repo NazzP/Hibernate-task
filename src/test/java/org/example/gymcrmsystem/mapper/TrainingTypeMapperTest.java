@@ -1,32 +1,26 @@
 package org.example.gymcrmsystem.mapper;
 
 import org.example.gymcrmsystem.config.AppConfig;
+import org.example.gymcrmsystem.config.JpaTestConfig;
+import org.example.gymcrmsystem.config.TestAppConfig;
 import org.example.gymcrmsystem.dto.TrainingTypeDto;
 import org.example.gymcrmsystem.entity.TrainingType;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = TestAppConfig.class)
+@ActiveProfiles("test")
 class TrainingTypeMapperTest {
 
-    private static TrainingTypeMapper trainingTypeMapper;
-    private static AnnotationConfigApplicationContext context;
-
-    @BeforeAll
-    public static void setUp() {
-        context = new AnnotationConfigApplicationContext(AppConfig.class);
-        trainingTypeMapper = context.getBean(TrainingTypeMapper.class);
-    }
-
-    @AfterAll
-    public static void tearDown() {
-        if (context != null) {
-            context.close();
-        }
-    }
+    @Autowired
+    private TrainingTypeMapper trainingTypeMapper;
 
     @Test
     void convertToDto() {
@@ -37,8 +31,10 @@ class TrainingTypeMapperTest {
 
         TrainingTypeDto trainingTypeDto = trainingTypeMapper.convertToDto(trainingType);
 
-        assertNotNull(trainingTypeDto);
-        assertEquals(trainingType.getTrainingTypeName(), trainingTypeDto.getTrainingTypeName());
+        assertAll("trainingTypeDto",
+                () -> assertNotNull(trainingTypeDto),
+                () -> assertEquals(trainingType.getTrainingTypeName(), trainingTypeDto.getTrainingTypeName())
+        );
     }
 
     @Test
@@ -55,8 +51,11 @@ class TrainingTypeMapperTest {
 
         TrainingType trainingType = trainingTypeMapper.convertToEntity(trainingTypeDto);
 
-        assertNotNull(trainingType);
-        assertEquals(trainingTypeDto.getTrainingTypeName(), trainingType.getTrainingTypeName());
+        assertAll("trainingType",
+                () -> assertNotNull(trainingType),
+                () -> assertEquals(trainingTypeDto.getTrainingTypeName(), trainingType.getTrainingTypeName())
+        );
+
     }
 
     @Test

@@ -9,7 +9,6 @@ import org.example.gymcrmsystem.entity.Trainer;
 import org.example.gymcrmsystem.exception.EntityNotFoundException;
 import org.example.gymcrmsystem.repository.TrainerRepository;
 import org.example.gymcrmsystem.service.TrainerService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,12 +19,14 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Testcontainers
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = AppConfig.class)
 @Transactional
+@ActiveProfiles("prod")
 class TrainerServiceIT {
 
     @Autowired
@@ -69,15 +70,15 @@ class TrainerServiceIT {
     void createTrainerSuccess() {
         TrainerDto result = trainerService.create(trainerDto);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals("FirstName", result.getUser().getFirstName());
-        Assertions.assertEquals("LastName", result.getUser().getLastName());
-        Assertions.assertEquals("Yoga", result.getSpecialization().getTrainingTypeName());
+        assertNotNull(result);
+        assertEquals("FirstName", result.getUser().getFirstName());
+        assertEquals("LastName", result.getUser().getLastName());
+        assertEquals("Yoga", result.getSpecialization().getTrainingTypeName());
 
         Trainer savedTrainer = trainerRepository.findByUsername(result.getUser().getUsername()).orElse(null);
-        Assertions.assertNotNull(savedTrainer);
-        Assertions.assertEquals(savedTrainer.getUser().getFirstName(), result.getUser().getFirstName());
-        Assertions.assertEquals(savedTrainer.getSpecialization().getTrainingTypeName(), result.getSpecialization().getTrainingTypeName());
+        assertNotNull(savedTrainer);
+        assertEquals(savedTrainer.getUser().getFirstName(), result.getUser().getFirstName());
+        assertEquals(savedTrainer.getSpecialization().getTrainingTypeName(), result.getSpecialization().getTrainingTypeName());
     }
 
     @Test
@@ -85,9 +86,9 @@ class TrainerServiceIT {
         TrainerDto result = trainerService.create(trainerDto);
         TrainerDto savedTrainerDto = trainerService.select(result.getUser().getUsername());
 
-        Assertions.assertNotNull(savedTrainerDto);
-        Assertions.assertEquals(savedTrainerDto.getUser().getFirstName(), result.getUser().getFirstName());
-        Assertions.assertEquals(savedTrainerDto.getSpecialization().getTrainingTypeName(), result.getSpecialization().getTrainingTypeName());
+        assertNotNull(savedTrainerDto);
+        assertEquals(savedTrainerDto.getUser().getFirstName(), result.getUser().getFirstName());
+        assertEquals(savedTrainerDto.getSpecialization().getTrainingTypeName(), result.getSpecialization().getTrainingTypeName());
     }
 
     @Test
@@ -114,9 +115,9 @@ class TrainerServiceIT {
 
         TrainerDto updatedResult = trainerService.update(result.getUser().getUsername(), updatedTrainerDto);
 
-        Assertions.assertNotNull(updatedResult);
-        Assertions.assertEquals("upd_FirstName", updatedResult.getUser().getFirstName());
-        Assertions.assertEquals("Yoga", updatedResult.getSpecialization().getTrainingTypeName());
+        assertNotNull(updatedResult);
+        assertEquals("upd_FirstName", updatedResult.getUser().getFirstName());
+        assertEquals("Yoga", updatedResult.getSpecialization().getTrainingTypeName());
     }
 
     @Test
@@ -143,7 +144,7 @@ class TrainerServiceIT {
         String password = trainerService.forgotPassword(username);
 
         boolean isAuthenticated = trainerService.authenticateTrainer(username, password);
-        Assertions.assertTrue(isAuthenticated);
+        assertTrue(isAuthenticated);
     }
 
     @Test
@@ -162,7 +163,7 @@ class TrainerServiceIT {
         trainerService.changeStatus(username, false);
 
         TrainerDto updatedTrainer = trainerService.select(username);
-        Assertions.assertFalse(updatedTrainer.getUser().getIsActive());
+        assertFalse(updatedTrainer.getUser().getIsActive());
     }
 
     @Test
@@ -181,7 +182,7 @@ class TrainerServiceIT {
         trainerService.changePassword(username, password, newPassword);
 
         boolean isAuthenticated = trainerService.authenticateTrainer(username, newPassword);
-        Assertions.assertTrue(isAuthenticated);
+        assertTrue(isAuthenticated);
     }
 
     @Test

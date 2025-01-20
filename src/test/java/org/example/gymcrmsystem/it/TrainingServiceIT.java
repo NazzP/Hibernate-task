@@ -24,12 +24,14 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Testcontainers
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = AppConfig.class)
 @Transactional
+@ActiveProfiles("prod")
 class TrainingServiceIT {
 
     @Autowired
@@ -116,10 +118,10 @@ class TrainingServiceIT {
     void addTrainingSuccess() {
         TrainingDto addedTraining = trainingService.add(trainingMapper.convertToDto(training));
 
-        Assertions.assertNotNull(addedTraining);
-        Assertions.assertEquals("Yoga", addedTraining.getTrainingType().getTrainingTypeName());
-        Assertions.assertEquals("John", addedTraining.getTrainer().getUser().getFirstName());
-        Assertions.assertEquals("Jane", addedTraining.getTrainee().getUser().getFirstName());
+        assertNotNull(addedTraining);
+        assertEquals("Yoga", addedTraining.getTrainingType().getTrainingTypeName());
+        assertEquals("John", addedTraining.getTrainer().getUser().getFirstName());
+        assertEquals("Jane", addedTraining.getTrainee().getUser().getFirstName());
     }
 
     @Test
@@ -155,10 +157,10 @@ class TrainingServiceIT {
 
         List<TrainingDto> trainings = trainingService.getTraineeTrainingsListCriteria(traineeUsername, fromDate, toDate, trainerName, trainingType);
 
-        Assertions.assertNotNull(trainings);
-        Assertions.assertFalse(trainings.isEmpty());
-        Assertions.assertEquals(1, trainings.size());
-        Assertions.assertEquals("Yoga", trainings.get(0).getTrainingType().getTrainingTypeName());
+        assertNotNull(trainings);
+        assertFalse(trainings.isEmpty());
+        assertEquals(1, trainings.size());
+        assertEquals("Yoga", trainings.get(0).getTrainingType().getTrainingTypeName());
     }
 
     @Test

@@ -22,12 +22,14 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Testcontainers
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = AppConfig.class)
 @Transactional
+@ActiveProfiles("prod")
 class TraineeServiceIT {
 
     @Autowired
@@ -73,15 +75,15 @@ class TraineeServiceIT {
     void createTraineeSuccess() {
         TraineeDto result = traineeService.create(traineeDto);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals("FirstName", result.getUser().getFirstName());
-        Assertions.assertEquals("LastName", result.getUser().getLastName());
-        Assertions.assertEquals("FirstName.LastName", result.getUser().getUsername());
+        assertNotNull(result);
+        assertEquals("FirstName", result.getUser().getFirstName());
+        assertEquals("LastName", result.getUser().getLastName());
+        assertEquals("FirstName.LastName", result.getUser().getUsername());
 
         Trainee savedTrainee = traineeRepository.findByUsername(result.getUser().getUsername()).orElse(null);
-        Assertions.assertNotNull(savedTrainee);
-        Assertions.assertEquals(savedTrainee.getUser().getFirstName(), result.getUser().getFirstName());
-        Assertions.assertEquals(savedTrainee.getAddress(), result.getAddress());
+        assertNotNull(savedTrainee);
+        assertEquals(savedTrainee.getUser().getFirstName(), result.getUser().getFirstName());
+        assertEquals(savedTrainee.getAddress(), result.getAddress());
     }
 
     @Test
@@ -89,9 +91,9 @@ class TraineeServiceIT {
         TraineeDto result = traineeService.create(traineeDto);
         TraineeDto savedTraineeDro = traineeService.select(traineeDto.getUser().getUsername());
 
-        Assertions.assertNotNull(savedTraineeDro);
-        Assertions.assertEquals(savedTraineeDro.getUser().getFirstName(), result.getUser().getFirstName());
-        Assertions.assertEquals(savedTraineeDro.getAddress(), result.getAddress());
+        assertNotNull(savedTraineeDro);
+        assertEquals(savedTraineeDro.getUser().getFirstName(), result.getUser().getFirstName());
+        assertEquals(savedTraineeDro.getAddress(), result.getAddress());
     }
 
     @Test
@@ -121,9 +123,9 @@ class TraineeServiceIT {
 
         TraineeDto updatedTraineeDro = traineeService.update(traineeDto.getUser().getUsername(), updatedTraineeDto);
 
-        Assertions.assertNotNull(updatedTraineeDro);
-        Assertions.assertEquals(updatedTraineeDro.getUser().getFirstName(), updatedFirstName);
-        Assertions.assertEquals(updatedTraineeDro.getAddress(), updatedAddress);
+        assertNotNull(updatedTraineeDro);
+        assertEquals(updatedTraineeDro.getUser().getFirstName(), updatedFirstName);
+        assertEquals(updatedTraineeDro.getAddress(), updatedAddress);
     }
 
     @Test
@@ -150,11 +152,11 @@ class TraineeServiceIT {
     void deleteTraineeSuccess() {
         TraineeDto result = traineeService.create(traineeDto);
 
-        Assertions.assertNotNull(result);
+        assertNotNull(result);
 
         traineeService.delete(result.getUser().getUsername());
         Trainee deletedTrainee = traineeRepository.findByUsername(result.getUser().getUsername()).orElse(null);
-        Assertions.assertNull(deletedTrainee);
+        assertNull(deletedTrainee);
     }
 
     @Test
@@ -171,7 +173,7 @@ class TraineeServiceIT {
         String password = traineeService.forgotPassword(username);
 
         boolean isAuthenticated = traineeService.authenticateTrainee(username, password);
-        Assertions.assertTrue(isAuthenticated);
+        assertTrue(isAuthenticated);
     }
 
     @Test
@@ -179,7 +181,7 @@ class TraineeServiceIT {
         String nonExistingUsername = "nonexistent";
         String password = "password";
         Exception exception = assertThrows(EntityNotFoundException.class, () -> traineeService.authenticateTrainee(nonExistingUsername, password));
-        Assertions.assertEquals("Trainee with username " + nonExistingUsername + " wasn't found", exception.getMessage());
+        assertEquals("Trainee with username " + nonExistingUsername + " wasn't found", exception.getMessage());
     }
 
     @Test
@@ -198,7 +200,7 @@ class TraineeServiceIT {
         String password = "random";
 
         boolean isAuthenticated = traineeService.authenticateTrainee(username, password);
-        Assertions.assertFalse(isAuthenticated);
+        assertFalse(isAuthenticated);
     }
 
     @Test
@@ -216,7 +218,7 @@ class TraineeServiceIT {
         traineeService.changePassword(username, password, newPassword);
 
         boolean isAuthenticated = traineeService.authenticateTrainee(username, newPassword);
-        Assertions.assertTrue(isAuthenticated);
+        assertTrue(isAuthenticated);
     }
 
     @Test
@@ -225,7 +227,7 @@ class TraineeServiceIT {
         String oldPassword = "oldPassword";
         String newPassword = "newPassword";
         Exception exception = assertThrows(EntityNotFoundException.class, () -> traineeService.changePassword(nonExistingUsername, oldPassword, newPassword));
-        Assertions.assertEquals("Trainee with username " + nonExistingUsername + " wasn't found", exception.getMessage());
+        assertEquals("Trainee with username " + nonExistingUsername + " wasn't found", exception.getMessage());
     }
 
     @Test
@@ -234,7 +236,7 @@ class TraineeServiceIT {
         String username = dto.getUser().getUsername();
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> traineeService.changePassword(username, "wrongPassword", "newPassword"));
-        Assertions.assertEquals("Wrong password", exception.getMessage());
+        assertEquals("Wrong password", exception.getMessage());
     }
 
     @Test
@@ -245,6 +247,6 @@ class TraineeServiceIT {
         traineeService.changeStatus(username, false);
 
         TraineeDto updatedTrainee = traineeService.select(username);
-        Assertions.assertFalse(updatedTrainee.getUser().getIsActive());
+        assertFalse(updatedTrainee.getUser().getIsActive());
     }
 }

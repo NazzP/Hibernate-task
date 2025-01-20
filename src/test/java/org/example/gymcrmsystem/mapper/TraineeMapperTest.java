@@ -1,32 +1,30 @@
 package org.example.gymcrmsystem.mapper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import org.example.gymcrmsystem.config.AppConfig;
+import org.example.gymcrmsystem.config.JpaTestConfig;
+import org.example.gymcrmsystem.config.TestAppConfig;
 import org.example.gymcrmsystem.dto.UserDto;
 import org.example.gymcrmsystem.entity.Trainee;
 import org.example.gymcrmsystem.dto.TraineeDto;
 import org.example.gymcrmsystem.entity.User;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = TestAppConfig.class)
+@ActiveProfiles("test")
 class TraineeMapperTest {
 
-
-    private static TraineeMapper traineeMapper;
-    private static AnnotationConfigApplicationContext context;
-
-    @BeforeAll
-    public static void setUp() {
-        context = new AnnotationConfigApplicationContext(AppConfig.class);
-        traineeMapper = context.getBean(TraineeMapper.class);
-    }
+    @Autowired
+    private TraineeMapper traineeMapper;
 
     @Test
     void convertToDto() {
@@ -43,13 +41,15 @@ class TraineeMapperTest {
 
         TraineeDto traineeDto = traineeMapper.convertToDto(trainee);
 
-        assertNotNull(traineeDto);
-        assertEquals(trainee.getUser().getFirstName(), traineeDto.getUser().getFirstName());
-        assertEquals(trainee.getUser().getLastName(), traineeDto.getUser().getLastName());
-        assertEquals(trainee.getUser().getUsername(), traineeDto.getUser().getUsername());
-        assertEquals(trainee.getUser().getIsActive(), traineeDto.getUser().getIsActive());
-        assertEquals(trainee.getDateOfBirth(), traineeDto.getDateOfBirth());
-        assertEquals(trainee.getAddress(), traineeDto.getAddress());
+        assertAll("traineeDto",
+                () -> assertNotNull(traineeDto),
+                () -> assertEquals(trainee.getUser().getFirstName(), traineeDto.getUser().getFirstName(), "First name should match"),
+                () -> assertEquals(trainee.getUser().getLastName(), traineeDto.getUser().getLastName(), "Last name should match"),
+                () -> assertEquals(trainee.getUser().getUsername(), traineeDto.getUser().getUsername(), "Username should match"),
+                () -> assertEquals(trainee.getUser().getIsActive(), traineeDto.getUser().getIsActive(), "Active status should match"),
+                () -> assertEquals(trainee.getDateOfBirth(), traineeDto.getDateOfBirth(), "Date of birth should match"),
+                () -> assertEquals(trainee.getAddress(), traineeDto.getAddress(), "Address should match")
+        );
     }
 
     @Test
@@ -73,25 +73,20 @@ class TraineeMapperTest {
 
         Trainee trainee = traineeMapper.convertToEntity(traineeDto);
 
-        assertNotNull(trainee);
-        assertEquals(traineeDto.getUser().getFirstName(), trainee.getUser().getFirstName());
-        assertEquals(traineeDto.getUser().getLastName(), trainee.getUser().getLastName());
-        assertEquals(traineeDto.getUser().getUsername(), trainee.getUser().getUsername());
-        assertEquals(traineeDto.getUser().getIsActive(), trainee.getUser().getIsActive());
-        assertEquals(traineeDto.getDateOfBirth(), trainee.getDateOfBirth());
-        assertEquals(traineeDto.getAddress(), trainee.getAddress());
+        assertAll("trainee",
+                () -> assertNotNull(trainee),
+                () -> assertEquals(traineeDto.getUser().getFirstName(), trainee.getUser().getFirstName()),
+                () -> assertEquals(traineeDto.getUser().getLastName(), trainee.getUser().getLastName()),
+                () -> assertEquals(traineeDto.getUser().getUsername(), trainee.getUser().getUsername()),
+                () -> assertEquals(traineeDto.getUser().getIsActive(), trainee.getUser().getIsActive()),
+                () -> assertEquals(traineeDto.getDateOfBirth(), trainee.getDateOfBirth()),
+                () -> assertEquals(traineeDto.getAddress(), trainee.getAddress())
+        );
     }
 
     @Test
     void convertToEntityWithNullTraineeDto() {
         Trainee trainee = traineeMapper.convertToEntity(null);
         assertNull(trainee, "Expected convertToEntity to return null when input is null");
-    }
-
-    @AfterAll
-    public static void tearDown() {
-        if (context != null) {
-            context.close();
-        }
     }
 }

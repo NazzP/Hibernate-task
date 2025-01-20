@@ -2,9 +2,12 @@ package org.example.gymcrmsystem.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.example.gymcrmsystem.config.JpaTestConfig;
+import org.example.gymcrmsystem.config.TestAppConfig;
 import org.example.gymcrmsystem.entity.User;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.example.gymcrmsystem.config.AppConfig;
@@ -19,7 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Transactional
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = AppConfig.class)
+@ContextConfiguration(classes = TestAppConfig.class)
+@ActiveProfiles("test")
 class UserRepositoryTest {
 
     @Autowired

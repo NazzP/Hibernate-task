@@ -1,8 +1,11 @@
 package org.example.gymcrmsystem.repository;
 
+import org.example.gymcrmsystem.config.JpaTestConfig;
+import org.example.gymcrmsystem.config.TestAppConfig;
 import org.example.gymcrmsystem.entity.TrainingType;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.example.gymcrmsystem.config.AppConfig;
@@ -17,7 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Transactional
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = AppConfig.class)
+@ContextConfiguration(classes = TestAppConfig.class)
+@ActiveProfiles("test")
 class TrainingTypeRepositoryTest {
 
     @Autowired
