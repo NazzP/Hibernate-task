@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
@@ -24,26 +23,26 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Table(name = "trainings")
-public class Training implements Serializable {
+public class Training {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "training_id", nullable = false, unique = true)
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "trainee_id")
+    @JoinColumn(name = "trainee_id", referencedColumnName = "id")
     private Trainee trainee;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "trainer_id")
+    @JoinColumn(name = "trainer_id", referencedColumnName = "id")
     private Trainer trainer;
 
     @Column(name = "training_name", nullable = false)
     private String trainingName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "training_type_id")
+    @JoinColumn(name = "training_type_id", referencedColumnName = "id")
     private TrainingType trainingType;
 
     @Column(name = "date", nullable = false)
